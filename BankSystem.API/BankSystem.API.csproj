@@ -14,4 +14,10 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BankSystem.Application\BankSystem.Application.csproj" />
+    <ProjectReference Include="..\BankSystem.Domain\BankSystem.Domain.csproj" />
+    <ProjectReference Include="..\BankSystem.Infrastructure\BankSystem.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
