@@ -5,7 +5,8 @@ namespace BankSystem.Infrastructure.Data;
 
 public class BankSystemDbContext : DbContext
 {
-	public BankSystemDbContext(DbContextOptions<BankSystemDbContext> options)
+    public BankSystemDbContext() { }
+    public BankSystemDbContext(DbContextOptions<BankSystemDbContext> options)
 		: base(options) { }
 
 	public DbSet<User> Users => Set<User>();
