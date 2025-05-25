@@ -6,13 +6,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Data\BankSystemDbContext.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Data\BankSystemDbContext.cs" />
-  </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\BankSystem.Application\BankSystem.Application.csproj" />
 		<ProjectReference Include="..\BankSystem.Domain\BankSystem.Domain.csproj" />
