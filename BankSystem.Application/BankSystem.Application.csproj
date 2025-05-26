@@ -10,9 +10,4 @@
     <ProjectReference Include="..\BankSystem.Domain\BankSystem.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
