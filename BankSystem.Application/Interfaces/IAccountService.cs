@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BankSystem.Domain.Entities;
+using BankSystem.API.DTOs;
 
 namespace BankSystem.Application.Interfaces
 {

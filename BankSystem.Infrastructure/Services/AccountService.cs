@@ -1,9 +1,9 @@
-﻿using BankSystem.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BankSystem.API.DTOs;
+using BankSystem.Application.Interfaces;
+using BankSystem.Domain.Entities;
+using BankSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace BankSystem.Application.Services
 {
@@ -21,7 +21,6 @@ namespace BankSystem.Application.Services
             var account = new Account
             {
                 AccountNumber = dto.AccountNumber,
-                HolderName = dto.HolderName,
                 Balance = 0
             };
 
@@ -30,7 +29,7 @@ namespace BankSystem.Application.Services
             return account;
         }
 
-        public async Task<IEnumerable<Account>> GetAccountsAsync()
+        public async Task<IEnumerable<Account>> GetAllAccountsAsync()
         {
             return await _context.Accounts.ToListAsync();
         }
