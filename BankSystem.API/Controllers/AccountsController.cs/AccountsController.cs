@@ -29,4 +29,5 @@ namespace BankSystem.API.Controllers.AccountsController.cs
             return Ok(accounts);
         }
     }
+}
 
