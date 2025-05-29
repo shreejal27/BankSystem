@@ -1,4 +1,4 @@
-﻿using BankSystem.API.DTOs;
+﻿using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ namespace BankSystem.API.Controllers.AccountsController.cs
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAccount(CreateAccountDto dto)
+        public async Task<IActionResult> CreateAccount(AccountDto dto)
         {
             var account = await _accountService.CreateAccountAsync(dto);
             return Ok(account);

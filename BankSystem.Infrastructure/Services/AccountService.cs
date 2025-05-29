@@ -1,4 +1,4 @@
-﻿using BankSystem.API.DTOs;
+﻿using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
@@ -16,7 +16,7 @@ namespace BankSystem.Application.Services
             _context = context;
         }
 
-        public async Task<Account> CreateAccountAsync(CreateAccountDto dto)
+        public async Task<Account> CreateAccountAsync(AccountDto dto)
         {
             var account = new Account
             {

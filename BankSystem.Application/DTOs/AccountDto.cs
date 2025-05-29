@@ -1,8 +1,9 @@
-﻿namespace BankSystem.API.DTOs
+﻿namespace BankSystem.Application.DTOs
 {
-    public class CreateAccountDto
+    public class AccountDto
     {
         public string AccountNumber { get; set; }
         public string HolderName { get; set; }
+        public double Amount { get; set; }
     }
 }
