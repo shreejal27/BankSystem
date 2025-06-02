@@ -33,5 +33,33 @@ namespace BankSystem.Application.Services
         {
             return await _context.Accounts.ToListAsync();
         }
+
+        public async Task<Account?> GetAccountByIdAsync(Guid id)
+        {
+            return await _context.Accounts.FindAsync(id);
+        }
+
+        public async Task<bool> UpdateAccountAsync(Guid id, UpdateAccountDto dto)
+        {
+            var account = await _context.Accounts.FindAsync(id);
+            if (account == null) return false;
+
+            account.Balance = dto.Balance;
+            account.AccountNumber = dto.AccountNumber;
+
+            _context.Accounts.Update(account);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteAccountAsync(Guid id)
+        {
+            var account = await _context.Accounts.FindAsync(id);
+            if (account == null) return false;
+
+            _context.Accounts.Remove(account);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
