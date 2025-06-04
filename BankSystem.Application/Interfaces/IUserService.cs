@@ -1,9 +1,8 @@
-﻿using BankSystem.Domain.Entities;
-using BankSystem.Application.DTOs;
+﻿using BankSystem.Application.DTOs;
 
 namespace BankSystem.Application.Interfaces
 {
-    public class IUserService
+    public interface IUserService
     {
         Task<bool> RegisterAsync(RegisterUserDto dto);
     }
