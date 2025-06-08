@@ -2,6 +2,7 @@
 using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.Infrastructure.Services
 {
@@ -28,6 +29,15 @@ namespace BankSystem.Infrastructure.Services
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<string?> LoginAsync(LoginUserDto dto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+                return null;
+
+            return $"fake-jwt-token-for-{user.Email}";
         }
     }
 }
