@@ -21,5 +21,12 @@ namespace BankSystem.API.Controllers
             return result ? Ok("User registered.") : BadRequest("Email already in use.");
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginUserDto dto)
+        {
+            var token = await _userService.LoginAsync(dto);
+            return token != null ? Ok(new { Token = token }) : Unauthorized("Invalid credentials.");
+        }
+
     }
 }
