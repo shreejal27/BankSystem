@@ -1,6 +1,8 @@
 ﻿using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
+using BankSystem.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.API.Controllers
 {
@@ -9,9 +11,13 @@ namespace BankSystem.API.Controllers
     public class AuthController: ControllerBase
     {
         private readonly IUserService _userService;
-        public AuthController(IUserService userService)
+        private readonly BankSystemDbContext _context;
+        private readonly IJwtTokenGenerator _jwt;
+        public AuthController(IUserService userService, BankSystemDbContext context, IJwtTokenGenerator jwt)
         {
             _userService = userService;
+            _context = context;
+            _jwt = jwt;
         }
 
         [HttpPost("register")]
@@ -24,8 +30,12 @@ namespace BankSystem.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserDto dto)
         {
-            var token = await _userService.LoginAsync(dto);
-            return token != null ? Ok(new { Token = token }) : Unauthorized("Invalid credentials.");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email && u.Password == dto.Password);
+            if (user == null)
+                return Unauthorized("Invalid credentials");
+
+            var token = _jwt.GenerateToken(user);
+            return Ok(new { Token = token });
         }
 
     }
