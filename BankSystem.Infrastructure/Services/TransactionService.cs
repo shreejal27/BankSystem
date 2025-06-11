@@ -1,5 +1,6 @@
 ﻿using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
+using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 
 namespace BankSystem.Infrastructure.Services
@@ -24,7 +25,7 @@ namespace BankSystem.Infrastructure.Services
             {
                 AccountId = account.Id,
                 Amount = dto.Amount,
-                Type = "Deposit",
+                Type = TransactionType.Deposit,
                 Description = $"Deposited {dto.Amount}"
             });
 
@@ -45,7 +46,7 @@ namespace BankSystem.Infrastructure.Services
             {
                 AccountId = account.Id,
                 Amount = dto.Amount,
-                Type = "Withdraw",
+                Type = TransactionType.Withdraw,
                 Description = $"Withdrew {dto.Amount}"
             });
 
@@ -70,7 +71,7 @@ namespace BankSystem.Infrastructure.Services
             {
                 AccountId = fromAccount.Id,
                 Amount = dto.Amount,
-                Type = "Transfer",
+                Type = TransactionType.Transfer,
                 Description = $"Transferred {dto.Amount} to {toAccount.AccountNumber}"
             });
 
@@ -78,7 +79,7 @@ namespace BankSystem.Infrastructure.Services
             {
                 AccountId = toAccount.Id,
                 Amount = dto.Amount,
-                Type = "Transfer",
+                Type = TransactionType.Transfer,
                 Description = $"Received {dto.Amount} from {fromAccount.AccountNumber}"
             });
 
