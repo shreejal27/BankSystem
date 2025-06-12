@@ -23,8 +23,5 @@ namespace BankSystem.API.Controllers
             await _transactionService.DepositAsync(dto);
             return Ok("Deposit successful.");
         }
-
-
-
     }
 }
