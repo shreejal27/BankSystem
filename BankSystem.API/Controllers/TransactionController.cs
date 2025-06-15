@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankSystem.API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
+    [Authorize]
     public class TransactionController : ControllerBase
     {
-        [ApiController]
-        [Route("api/[controller]")]
-        [Authorize]
+       
         private readonly ITransactionService _transactionService;
 
         public TransactionController(ITransactionService transactionService)
