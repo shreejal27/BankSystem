@@ -2,7 +2,7 @@
 
 namespace BankSystem.Application.Interfaces
 {
-    public class ITransactionService
+    public interface ITransactionService
     {
         Task DepositAsync(DepositDto dto);
         Task WithdrawAsync(WithdrawDto dto);
