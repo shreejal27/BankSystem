@@ -22,7 +22,7 @@ namespace BankSystem.API.Controllers
         public async Task<IActionResult> Deposit([FromBody] DepositDto dto)
         {
             await _transactionService.DepositAsync(dto);
-            return Ok("Deposit successful !!!");
+            return Ok("Deposit successful.");
         }
     }
 }
