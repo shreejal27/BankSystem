@@ -2,6 +2,7 @@
 using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.Infrastructure.Services
 {
@@ -94,6 +95,23 @@ namespace BankSystem.Infrastructure.Services
                 .ToListAsync();
 
             return transactions;
+        }
+
+        public async Task<IEnumerable<TransactionDto>> GetTransactionsByAccountIdAsync(Guid accountId)
+        {
+            var transactions = await _context.Transactions
+                .Where(t => t.AccountId == accountId)
+                .OrderByDescending(t => t.Timestamp)
+                .ToListAsync();
+
+            return transactions.Select(t => new TransactionDto
+            {
+                Id = t.Id,
+                AccountId = t.AccountId,
+                Amount = t.Amount,
+                Type = t.Type,
+                CreatedAt = t.Timestamp
+            });
         }
     }
 }

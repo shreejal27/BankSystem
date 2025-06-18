@@ -8,5 +8,6 @@ namespace BankSystem.Application.Interfaces
         Task WithdrawAsync(WithdrawDto dto);
         Task TransferAsync(TransferDto dto);
         Task<IEnumerable<Transaction>> GetAccountTransactionsAsync(Guid accountId);
+        Task<IEnumerable<TransactionDto>> GetTransactionsByAccountIdAsync(Guid accountId);
     }
 }
