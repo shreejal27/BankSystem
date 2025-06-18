@@ -24,5 +24,12 @@ namespace BankSystem.API.Controllers
             await _transactionService.DepositAsync(dto);
             return Ok("Deposit successful.");
         }
+
+        [HttpGet("account/{accountId}")]
+        public async Task<IActionResult> GetTransactionsByAccount(Guid accountId)
+        {
+            var result = await _transactionService.GetTransactionsByAccountIdAsync(accountId);
+            return Ok(result);
+        }
     }
 }
