@@ -1,4 +1,5 @@
 ﻿using BankSystem.Application.Interfaces;
+using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
