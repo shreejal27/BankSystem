@@ -4,7 +4,7 @@ using MimeKit;
 
 namespace BankSystem.Infrastructure.Services
 {
-    internal class EmailService : IEmailService
+    public class EmailService : IEmailService
     {
         private readonly EmailSettings _settings;
 
