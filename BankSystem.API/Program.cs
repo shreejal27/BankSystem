@@ -5,6 +5,7 @@ using BankSystem.Application.Services;
 using BankSystem.Infrastructure.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BankSystem.Application.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+builder.Services.Configure<EmailDto>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddDbContext<BankSystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
