@@ -1,4 +1,5 @@
-﻿using BankSystem.Application.Interfaces;
+﻿using BankSystem.Application.DTOs;
+using BankSystem.Application.Interfaces;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -7,9 +8,9 @@ namespace BankSystem.Infrastructure.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly EmailSettings _settings;
+        private readonly EmailDto _settings;
 
-        public EmailService(IOptions<EmailSettings> settings)
+        public EmailService(IOptions<EmailDto> settings)
         {
             _settings = settings.Value;
         }
