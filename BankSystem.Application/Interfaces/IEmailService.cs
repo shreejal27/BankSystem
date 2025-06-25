@@ -1,6 +1,6 @@
 ﻿namespace BankSystem.Application.Interfaces
 {
-    public class IEmailService
+    public interface IEmailService
     {
         Task SendEmailAsync(string toEmail, string subject, string body);
     }
