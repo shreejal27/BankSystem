@@ -9,10 +9,12 @@ namespace BankSystem.Infrastructure.Services
     public class TransactionService : ITransactionService
     {
         private readonly BankSystemDbContext _context;
+        private readonly IEmailService _emailService;
 
-        public TransactionService(BankSystemDbContext context)
+        public TransactionService(BankSystemDbContext context, IEmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         public async Task DepositAsync(DepositDto dto)
@@ -31,6 +33,14 @@ namespace BankSystem.Infrastructure.Services
             });
 
             await _context.SaveChangesAsync();
+
+            var user = account.User;
+            if (user != null)
+            {
+                var subject = "Deposit Confirmation";
+                var message = $"Hi {user.Name},\n\nYou've successfully deposited {dto.Amount} into your account.";
+                await _emailService.SendEmailAsync(user.Email, subject, message);
+            }
         }
 
         public async Task WithdrawAsync(WithdrawDto dto)
