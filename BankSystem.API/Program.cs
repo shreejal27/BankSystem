@@ -6,8 +6,13 @@ using BankSystem.Infrastructure.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using BankSystem.Application.DTOs;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddFluentValidationAutoValidation(); // Enables automatic model validation
+builder.Services.AddValidatorsFromAssemblyContaining<BankSystem.Application.DTOs.CreateAccountDtoValidator>();
 
 // Add services to the container.
 
@@ -44,7 +49,6 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddDbContext<BankSystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 var app = builder.Build();
 
