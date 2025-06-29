@@ -8,11 +8,12 @@ using System.Text;
 using BankSystem.Application.DTOs;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using BankSystem.Application.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddFluentValidationAutoValidation(); // Enables automatic model validation
-builder.Services.AddValidatorsFromAssemblyContaining<BankSystem.Application.DTOs.CreateAccountDtoValidator>();
+builder.Services.AddFluentValidationAutoValidation(); 
+builder.Services.AddValidatorsFromAssemblyContaining<AccountDtoValidator>();
 
 // Add services to the container.
 
