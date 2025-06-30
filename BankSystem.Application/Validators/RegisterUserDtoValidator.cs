@@ -14,10 +14,10 @@ namespace BankSystem.Application.Validators
                 .WithMessage("Invalid email format.");
 
             RuleFor(x => x.Name)
-                .NotEmpty();
+                .NotEmpty().WithMessage("Name is required.");
 
             RuleFor(x => x.Password)
-                .NotEmpty()
+                .NotEmpty().WithMessage("Password is required.")
                 .MinimumLength(8);
         }
     }
