@@ -1,4 +1,5 @@
 ﻿using BankSystem.Application.DTOs;
+using BankSystem.Domain.Entities;
 
 namespace BankSystem.Application.Interfaces
 {
