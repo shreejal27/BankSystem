@@ -62,6 +62,12 @@ namespace BankSystem.Infrastructure.Services
             });
 
             await _context.SaveChangesAsync();
+
+            await _emailService.SendEmailAsync(
+               account.User.Email,
+               "Withdrawal Confirmation",
+               $"Dear {account.User.Name},<br/><br/>You have withdrawn <strong>{dto.Amount}</strong> from your account {account.AccountNumber}.<br/>Remaining Balance: <strong>{account.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
+           );
         }
 
         public async Task TransferAsync(TransferDto dto)
