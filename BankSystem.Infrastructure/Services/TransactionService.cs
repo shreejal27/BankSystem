@@ -101,6 +101,18 @@ namespace BankSystem.Infrastructure.Services
             });
 
             await _context.SaveChangesAsync();
+
+            await _emailService.SendEmailAsync(
+               fromAccount.User.Email,
+               "Transfer Confirmation",
+               $"Dear {fromAccount.User.Name},<br/><br/>You have transferred <strong>{dto.Amount}</strong> to account ending with {fromAccount.AccountNumber[^4..]}.<br/>Remaining Balance: <strong>{fromAccount.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
+           );
+
+            await _emailService.SendEmailAsync(
+                toAccount.User.Email,
+                "Deposit Received",
+                $"Dear {toAccount.User.Name},<br/><br/>You have received <strong>{dto.Amount}</strong> from account ending with {toAccount.AccountNumber[^4..]}.<br/>New Balance: <strong>{toAccount.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
+            );
         }
 
         public async Task<IEnumerable<Transaction>> GetAccountTransactionsAsync(Guid accountId)
