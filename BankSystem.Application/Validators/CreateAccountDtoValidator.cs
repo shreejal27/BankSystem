@@ -12,6 +12,9 @@ namespace BankSystem.Application.Validators
 
             RuleFor(x => x.Amount)
                 .GreaterThanOrEqualTo(0).WithMessage("Initial balance must be non-negative.");
+
+
+
         }
     }
 }
