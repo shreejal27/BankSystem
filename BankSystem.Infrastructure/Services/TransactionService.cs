@@ -124,6 +124,15 @@ namespace BankSystem.Infrastructure.Services
                 "Deposit Received",
                 $"Dear {toAccount.User.Name},<br/><br/>You have received <strong>{dto.Amount}</strong> from account ending with {toAccount.AccountNumber[^4..]}.<br/>New Balance: <strong>{toAccount.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
             );
+
+            if (fromAccount.Balance < LowBalanceThreshold)
+            {
+                await _emailService.SendEmailAsync(
+                    fromAccount.User.Email,
+                    "Low Balance Alert",
+                    $"Dear {fromAccount.User.Name},<br/><br/>After transferring {dto.Amount}, your remaining balance is <strong>{fromAccount.Balance}</strong>, which is below the safe threshold.<br/>Please consider depositing funds.<br/><br/>Regards,<br/>BankSystem"
+                );
+            }
         }
 
         public async Task<IEnumerable<Transaction>> GetAccountTransactionsAsync(Guid accountId)
