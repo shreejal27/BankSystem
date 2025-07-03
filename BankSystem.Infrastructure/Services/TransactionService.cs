@@ -11,6 +11,8 @@ namespace BankSystem.Infrastructure.Services
         private readonly BankSystemDbContext _context;
         private readonly IEmailService _emailService;
 
+        private const decimal LowBalanceThreshold = 100;
+
         public TransactionService(BankSystemDbContext context, IEmailService emailService)
         {
             _context = context;
@@ -68,6 +70,15 @@ namespace BankSystem.Infrastructure.Services
                "Withdrawal Confirmation",
                $"Dear {account.User.Name},<br/><br/>You have withdrawn <strong>{dto.Amount}</strong> from your account {account.AccountNumber}.<br/>Remaining Balance: <strong>{account.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
            );
+
+            if (account.Balance < LowBalanceThreshold)
+            {
+                await _emailService.SendEmailAsync(
+                    account.User.Email,
+                    "Low Balance Alert",
+                    $"Dear {account.User.Name},<br/><br/>Your account balance is <strong>{account.Balance}</strong> which is below the safe threshold.<br/>Consider depositing funds to avoid service interruptions.<br/><br/>Regards,<br/>BankSystem"
+                );
+            }
         }
 
         public async Task TransferAsync(TransferDto dto)
