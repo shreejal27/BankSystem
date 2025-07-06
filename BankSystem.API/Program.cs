@@ -48,6 +48,8 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
