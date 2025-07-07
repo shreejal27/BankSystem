@@ -30,11 +30,12 @@ namespace BankSystem.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserDto dto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email && u.Password == dto.Password);
-            if (user == null)
+            //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email && u.Password == dto.Password);
+            var token = await _userService.LoginAsync(dto);
+            if (token == null)
                 return Unauthorized("Invalid credentials");
 
-            var token = _jwt.GenerateToken(user);
+
             return Ok(new { Token = token });
         }
 

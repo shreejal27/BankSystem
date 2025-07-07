@@ -9,9 +9,11 @@ namespace BankSystem.Infrastructure.Services
     public class UserService: IUserService
     {
         private readonly BankSystemDbContext _context;
-        public UserService(BankSystemDbContext context)
+        private readonly IJwtTokenGenerator _jwt;
+        public UserService(BankSystemDbContext context, IJwtTokenGenerator jwt)
         {
             _context = context;
+            _jwt = jwt;
         }
 
         public async Task<bool> RegisterAsync(RegisterUserDto dto)
@@ -37,7 +39,8 @@ namespace BankSystem.Infrastructure.Services
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
                 return null;
 
-            return $"fake-jwt-token-for-{user.Email}";
+            var token = _jwt.GenerateToken(user);
+            return token;
         }
     }
 }

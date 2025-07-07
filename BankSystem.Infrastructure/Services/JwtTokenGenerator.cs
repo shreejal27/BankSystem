@@ -19,7 +19,7 @@ namespace BankSystem.Infrastructure.Services
 
         public string GenerateToken(User user)
         {
-            var jwtSettings = _config.GetSection("Jwt");
+            var jwtSettings = _config.GetSection("JwtSettings");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
