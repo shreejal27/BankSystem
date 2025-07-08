@@ -9,6 +9,7 @@ using BankSystem.Application.DTOs;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using BankSystem.Application.Validators;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +52,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
