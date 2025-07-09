@@ -1,5 +1,6 @@
 ﻿using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
+using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +28,7 @@ namespace BankSystem.Infrastructure.Services
 
             var transactions = await _context.Transactions
                 .Where(t => accountIds.Contains(t.AccountId))
-                .OrderByDescending(t => t.CreatedAt)
+                .OrderByDescending(t => t.Timestamp)
                 .Take(5)
                 .ToListAsync();
 
