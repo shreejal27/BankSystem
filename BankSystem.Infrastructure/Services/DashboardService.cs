@@ -40,8 +40,8 @@ namespace BankSystem.Infrastructure.Services
                 RecentTransactions = transactions.Select(t => new TransactionDto
                 {
                     Amount = t.Amount,
-                    Type = t.Type.ToString(),
-                    CreatedAt = t.CreatedAt
+                    Type = t.Type,
+                    CreatedAt = t.Timestamp
                 })
             };
         }
