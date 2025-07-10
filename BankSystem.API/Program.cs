@@ -49,6 +49,8 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddScoped<IAdminService, AdminService>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
