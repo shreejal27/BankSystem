@@ -1,5 +1,6 @@
 ﻿using BankSystem.Application.Interfaces;
 using BankSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.Infrastructure.Services
 {
@@ -11,6 +12,11 @@ namespace BankSystem.Infrastructure.Services
         {
             _context = context;
         }
+        public async Task<int> GetTotalUsersAsync()
+        {
+            return await _context.Users.CountAsync();
+        }
+
         public async Task DeactivateUserAsync(Guid userId)
         {
             var user = await _context.Users.FindAsync(userId)
