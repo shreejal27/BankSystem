@@ -28,5 +28,12 @@ namespace BankSystem.API.Controllers
             await _adminService.DeactivateUserAsync(id);
             return Ok(new { message = "User deactivated successfully" });
         }
+
+        [HttpGet("transactions")]
+        public async Task<IActionResult> GetTransactions()
+        {
+            var transactions = await _adminService.GetAllTransactionsAsync();
+            return Ok(transactions);
+        }
     }
 }
