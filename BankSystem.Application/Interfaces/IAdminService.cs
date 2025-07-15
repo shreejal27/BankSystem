@@ -1,4 +1,4 @@
-﻿using System.Transactions;
+﻿using BankSystem.Domain.Entities;
 
 namespace BankSystem.Application.Interfaces
 {
