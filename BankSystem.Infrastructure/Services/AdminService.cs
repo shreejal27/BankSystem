@@ -1,4 +1,5 @@
 ﻿using BankSystem.Application.Interfaces;
+using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,14 @@ namespace BankSystem.Infrastructure.Services
                 UsersWithoutTransactions = usersWithoutTransactions
             };
         }
+        public async Task<IEnumerable<Transaction>> GetAllTransactionsAsync()
+        {
+            return await _context.Transactions
+                .Include(t => t.Account)
+                .ThenInclude(a => a.User)
+                .ToListAsync();
+        }
+
         public async Task DeactivateUserAsync(Guid userId)
         {
             var user = await _context.Users.FindAsync(userId)
