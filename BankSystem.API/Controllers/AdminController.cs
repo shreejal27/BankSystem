@@ -22,6 +22,13 @@ namespace BankSystem.API.Controllers
             });
         }
 
+        [HttpGet("user-transaction-stats")]
+        public async Task<IActionResult> GetUserTransactionStats()
+        {
+            var result = await _adminService.GetUserTransactionStatsAsync();
+            return Ok(result);
+        }
+
         [HttpPut("users/{id}/deactivate")]
         public async Task<IActionResult> DeactivateUser(Guid id)
         {
