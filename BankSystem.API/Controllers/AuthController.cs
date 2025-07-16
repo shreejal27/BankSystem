@@ -8,7 +8,7 @@ namespace BankSystem.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController: ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly BankSystemDbContext _context;
@@ -37,6 +37,16 @@ namespace BankSystem.API.Controllers
 
 
             return Ok(new { Token = token });
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            return Ok(
+                new {
+                         message = "User logged out successfully (token still valid until expiry)." 
+                    }
+            );
         }
 
     }
