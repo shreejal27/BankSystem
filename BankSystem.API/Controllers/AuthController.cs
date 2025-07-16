@@ -44,7 +44,7 @@ namespace BankSystem.API.Controllers
         {
             return Ok(
                 new {
-                         message = "User logged out successfully (token still valid until expiry)." 
+                         message = "User logged out successfully." 
                     }
             );
         }
