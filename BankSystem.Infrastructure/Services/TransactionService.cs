@@ -100,21 +100,25 @@ namespace BankSystem.Infrastructure.Services
             fromAccount.Balance -= dto.Amount;
             toAccount.Balance += dto.Amount;
 
-            _context.Transactions.Add(new Transaction
+            var transactionOut = new Transaction
             {
                 AccountId = fromAccount.Id,
                 Amount = dto.Amount,
                 Type = TransactionType.Transfer,
+                Timestamp = DateTime.UtcNow,
                 Description = $"Transferred {dto.Amount} to {toAccount.AccountNumber}"
-            });
+            };
 
-            _context.Transactions.Add(new Transaction
+            var transactionIn = new Transaction
             {
                 AccountId = toAccount.Id,
                 Amount = dto.Amount,
-                Type = TransactionType.Transfer,
+                Type = TransactionType.Deposit,
+                Timestamp = DateTime.UtcNow,
                 Description = $"Received {dto.Amount} from {fromAccount.AccountNumber}"
-            });
+            };
+
+            _context.Transactions.AddRange(transactionOut, transactionIn);
 
             await _context.SaveChangesAsync();
 
