@@ -85,6 +85,9 @@ namespace BankSystem.Infrastructure.Services
 
         public async Task TransferAsync(TransferDto dto)
         {
+            if (dto.FromAccountId == dto.ToAccountId)
+                throw new Exception("Cannot transfer to the same account.");
+
             var fromAccount = await _context.Accounts.FindAsync(dto.FromAccountId)
                 ?? throw new Exception("Sender account not found");
 
