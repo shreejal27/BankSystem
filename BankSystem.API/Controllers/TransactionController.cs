@@ -25,6 +25,20 @@ namespace BankSystem.API.Controllers
             return Ok("Deposit successful.");
         }
 
+        [HttpPost("withdraw")]
+        public async Task<IActionResult> Withdraw([FromBody] WithdrawDto dto)
+        {
+            try
+            {
+                await _transactionService.WithdrawAsync(dto);
+                return Ok(new { message = "Withdrawal successful." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpGet("account/{accountId}")]
         public async Task<IActionResult> GetTransactionsByAccount(Guid accountId)
         {
