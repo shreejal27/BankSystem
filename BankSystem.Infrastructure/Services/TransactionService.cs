@@ -55,13 +55,15 @@ namespace BankSystem.Infrastructure.Services
 
             account.Balance -= dto.Amount;
 
-            _context.Transactions.Add(new Transaction
+            var transaction = new Transaction
             {
                 AccountId = account.Id,
                 Amount = dto.Amount,
                 Type = TransactionType.Withdraw,
-                Description = $"Withdrew {dto.Amount}"
-            });
+                Timestamp = DateTime.UtcNow
+            };
+
+            _context.Transactions.Add(transaction);
 
             await _context.SaveChangesAsync();
 
