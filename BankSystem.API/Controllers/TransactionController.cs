@@ -39,6 +39,20 @@ namespace BankSystem.API.Controllers
             }
         }
 
+        [HttpPost("transfer")]
+        public async Task<IActionResult> Transfer([FromBody] TransferDto dto)
+        {
+            try
+            {
+                await _transactionService.TransferAsync(dto);
+                return Ok(new { message = "Transfer successful." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpGet("account/{accountId}")]
         public async Task<IActionResult> GetTransactionsByAccount(Guid accountId)
         {
