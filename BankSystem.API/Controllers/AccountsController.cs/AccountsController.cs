@@ -1,5 +1,6 @@
 ﻿using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankSystem.API.Controllers.AccountsController.cs
@@ -49,6 +50,13 @@ namespace BankSystem.API.Controllers.AccountsController.cs
         {
             var success = await _accountService.DeleteAccountAsync(id);
             return success ? NoContent() : NotFound();
+        }
+
+        [HttpGet("balance")]
+        public async Task<IActionResult> GetBalance(Guid id)
+        {
+            var balance = await _accountService.GetAccountBalanceAsync(id);
+            return Ok(new { Balance = balance });
         }
     }
 }
