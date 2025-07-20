@@ -61,5 +61,16 @@ namespace BankSystem.Application.Services
             await _context.SaveChangesAsync();
             return true;
         }
+        public async Task<decimal> GetAccountBalanceAsync(Guid userId)
+        {
+            var account = await _context.Accounts
+                .FirstOrDefaultAsync(a => a.UserId == userId);
+
+            if (account == null)
+                throw new Exception("Account not found.");
+
+            return account.Balance;
+        }
+
     }
 }
