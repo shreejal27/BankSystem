@@ -23,9 +23,17 @@ public class BankSystemDbContext : DbContext
 			.WithMany()   // If User has `List<Account> Accounts`, use `.WithMany(u => u.Accounts)`
 			.HasForeignKey(a => a.UserId);
 
-		modelBuilder.Entity<Transaction>()
+        modelBuilder.Entity<Account>()
+			.Property(a => a.Balance) 
+			.HasPrecision(18, 2);
+
+        modelBuilder.Entity<Transaction>()
 			.HasOne(t => t.Account)
 			.WithMany()
 			.HasForeignKey(t => t.AccountId);
-	}
+
+        modelBuilder.Entity<Transaction>()
+			.Property(t => t.Amount)
+			.HasPrecision(18, 2);
+    }
 }
