@@ -16,6 +16,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddFluentValidationAutoValidation(); 
 builder.Services.AddValidatorsFromAssemblyContaining<AccountDtoValidator>();
 
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173") //frontend port
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -73,6 +86,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowFrontend");
 
 app.UseAuthorization();
 
