@@ -46,10 +46,23 @@ namespace BankSystem.API.Controllers
             //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email && u.Password == dto.Password);
             var token = await _userService.LoginAsync(dto);
             if (token == null)
-                return Unauthorized("Invalid credentials");
+            {
+                return StatusCode(401, new
+                {
+                    statusCode = 401,
+                    message = "Invalid credentials"
+                });
+            }
 
-
-            return Ok(new { Token = token });
+            return StatusCode(200, new
+            {
+                statusCode = 200,
+                message = "Login successful",
+                data = new
+                {
+                    token
+                }
+            });
         }
 
         [HttpPost("logout")]
