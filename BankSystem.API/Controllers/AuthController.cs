@@ -24,7 +24,20 @@ namespace BankSystem.API.Controllers
         public async Task<IActionResult> Register(RegisterUserDto dto)
         {
             var result = await _userService.RegisterAsync(dto);
-            return result ? Ok("User successfully registered in the system.") : BadRequest("Email already exists.");
+            if (result)
+            {
+                return StatusCode(201, new
+                {
+                    statusCode = 201,
+                    message = "User successfully registered.",
+                });
+            }
+
+            return StatusCode(409, new
+            {
+                statusCode = 409,
+                message = "Email already exists."
+            });
         }
 
         [HttpPost("login")]
