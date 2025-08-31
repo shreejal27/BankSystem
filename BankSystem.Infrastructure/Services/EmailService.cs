@@ -21,7 +21,7 @@ namespace BankSystem.Infrastructure.Services
             email.From.Add(new MailboxAddress(_settings.SenderName, _settings.SenderEmail));
             email.To.Add(MailboxAddress.Parse(toEmail));
             email.Subject = subject;
-            email.Body = new TextPart("plain") { Text = body };
+            email.Body = new TextPart("html") { Text = body };
 
             using var smtp = new SmtpClient();
             await smtp.ConnectAsync(_settings.SmtpServer, _settings.Port, MailKit.Security.SecureSocketOptions.StartTls);
