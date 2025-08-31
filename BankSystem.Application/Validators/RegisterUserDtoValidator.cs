@@ -15,10 +15,6 @@ namespace BankSystem.Application.Validators
 
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Name is required.");
-
-            RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Password is required.")
-                .MinimumLength(8);
         }
     }
 }
