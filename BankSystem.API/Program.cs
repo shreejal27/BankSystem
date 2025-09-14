@@ -1,15 +1,17 @@
-using Microsoft.EntityFrameworkCore;
-using BankSystem.Infrastructure.Data;
+using BankSystem.Application.Common.Utils;
+using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
 using BankSystem.Application.Services;
+using BankSystem.Application.Validators;
+using BankSystem.Infrastructure.Data;
 using BankSystem.Infrastructure.Services;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using BankSystem.Application.DTOs;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using BankSystem.Application.Validators;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +79,8 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddDbContext<BankSystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddSingleton<EncryptDecryptAccountNumber>();
 
 var app = builder.Build();
 

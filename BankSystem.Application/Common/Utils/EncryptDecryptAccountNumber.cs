@@ -12,10 +12,14 @@ namespace BankSystem.Application.Common.Utils
 
         public EncryptDecryptAccountNumber(IConfiguration config)
         {
-            _encryptionKey = config.GetSection("AccountNumber")["Key"];
+            _encryptionKey = config["AccountNumEncryption:Key"];
+            if (string.IsNullOrWhiteSpace(_encryptionKey))
+            {
+                throw new InvalidOperationException("Encryption key is missing in configuration.");
+            }
         }
 
-        public static string Encrypt(string plainText)
+        public string Encrypt(string plainText)
         {
             using var aes = Aes.Create();
             var key = Encoding.UTF8.GetBytes(_encryptionKey.PadRight(32).Substring(0, 32));
@@ -32,7 +36,8 @@ namespace BankSystem.Application.Common.Utils
 
             return Convert.ToBase64String(ms.ToArray());
         }
-        public static string Decrypt(string cipherText)
+
+        public string Decrypt(string cipherText)
         {
             using var aes = Aes.Create();
             var key = Encoding.UTF8.GetBytes(_encryptionKey.PadRight(32).Substring(0, 32));
