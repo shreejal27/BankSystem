@@ -78,7 +78,7 @@ namespace BankSystem.API.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
-            var result = await _userService.ResetPasswordAsync(dto.TempPassword, dto.NewPassword);
+            var result = await _userService.ResetPasswordAsync(dto);
             if (!result)
                 return BadRequest(new { message = "Invalid or expired temporary password." });
 

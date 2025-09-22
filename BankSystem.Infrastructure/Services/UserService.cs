@@ -4,6 +4,10 @@ using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace BankSystem.Infrastructure.Services
 {
@@ -62,6 +66,41 @@ namespace BankSystem.Infrastructure.Services
 
             var token = _jwt.GenerateToken(user);
             return token;
+        }
+        public async Task<bool> ResetPasswordAsync(ResetPasswordDto dto)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            SecurityToken validatedToken;
+
+            var key = Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]);
+
+            try
+            {
+                var principal = handler.ValidateToken(dto.Token, new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateLifetime = true
+                }, out validatedToken);
+
+                var email = principal.FindFirst(ClaimTypes.Email)?.Value;
+                if (email == null)
+                    return false;
+
+                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+                if (user == null)
+                    return false;
+
+                user.PasswordHash = _passwordHasher.HashPassword(user, dto.NewPassword);
+                await _dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

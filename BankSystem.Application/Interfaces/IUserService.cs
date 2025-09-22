@@ -6,5 +6,6 @@ namespace BankSystem.Application.Interfaces
     {
         Task<bool> RegisterAsync(RegisterUserDto dto);
         Task<string?> LoginAsync(LoginUserDto dto);
+        Task<bool> ResetPasswordAsync(ResetPasswordDto dto);
     }
 }
