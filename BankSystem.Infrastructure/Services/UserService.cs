@@ -5,6 +5,7 @@ using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Security;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -88,12 +89,12 @@ namespace BankSystem.Infrastructure.Services
                 if (email == null)
                     return false;
 
-                var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
                 if (user == null)
                     return false;
 
-                user.PasswordHash = _passwordHasher.HashPassword(user, dto.NewPassword);
-                await _dbContext.SaveChangesAsync();
+                user.Password = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+                await _context.SaveChangesAsync();
 
                 return true;
             }
