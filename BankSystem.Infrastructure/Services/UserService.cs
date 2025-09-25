@@ -4,6 +4,7 @@ using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Org.BouncyCastle.Security;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,12 +18,14 @@ namespace BankSystem.Infrastructure.Services
         private readonly BankSystemDbContext _context;
         private readonly IJwtTokenGenerator _jwt;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _config;
 
-        public UserService(BankSystemDbContext context, IJwtTokenGenerator jwt, IEmailService emailService)
+        public UserService(BankSystemDbContext context, IJwtTokenGenerator jwt, IEmailService emailService, IConfiguration config)
         {
             _context = context;
             _jwt = jwt;
             _emailService = emailService;
+            _config = config;
         }
 
         public async Task<bool> RegisterAsync(RegisterUserDto dto)
@@ -73,7 +76,8 @@ namespace BankSystem.Infrastructure.Services
             var handler = new JwtSecurityTokenHandler();
             SecurityToken validatedToken;
 
-            var key = Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]);
+            var jwtSettings = _config.GetSection("JwtSettings");
+            var key = jwtSettings["Key"];
 
             try
             {
@@ -81,7 +85,7 @@ namespace BankSystem.Infrastructure.Services
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
                     ValidateLifetime = true
                 }, out validatedToken);
 
