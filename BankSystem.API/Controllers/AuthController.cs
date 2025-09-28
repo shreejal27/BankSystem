@@ -80,7 +80,7 @@ namespace BankSystem.API.Controllers
         {
             var result = await _userService.ResetPasswordAsync(dto);
             if (!result)
-                return BadRequest(new { message = "Invalid or expired temporary password." });
+                return BadRequest(new { message = "Invalid or expired password." });
 
             return Ok(new { message = "Password reset successfully." });
         }
