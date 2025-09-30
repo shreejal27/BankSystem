@@ -9,5 +9,6 @@ namespace BankSystem.Application.Interfaces
         Task<string?> LoginAsync(LoginUserDto dto);
         Task<bool> ResetPasswordAsync(ResetPasswordDto dto);
         Task<User?> GetUserByIdAsync(Guid id);
+        Task<bool> UpdateUserAsync(Guid id, UserDto dto);
     }
 }

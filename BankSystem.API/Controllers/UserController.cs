@@ -23,18 +23,12 @@ namespace BankSystem.API.Controllers
             return Ok(user);
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Update(Guid id, [FromBody] UpdateAccountDto dto)
-        //{
-        //    var success = await _accountService.UpdateAccountAsync(id, dto);
-        //    return success ? NoContent() : NotFound();
-        //}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UserDto dto)
+        {
+            var success = await _userService.UpdateUserAsync(id, dto);
+            return success ? NoContent() : NotFound();
+        }
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(Guid id)
-        //{
-        //    var success = await _accountService.DeleteAccountAsync(id);
-        //    return success ? NoContent() : NotFound();
-        //}
     }
 }
