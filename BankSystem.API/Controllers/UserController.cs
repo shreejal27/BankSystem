@@ -1,5 +1,6 @@
 ﻿using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
+using BankSystem.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankSystem.API.Controllers
@@ -13,6 +14,13 @@ namespace BankSystem.API.Controllers
         public UserController(IUserService userService)
         {
             _userService = userService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsersAsync()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
         }
 
         [HttpGet("{id}")]
