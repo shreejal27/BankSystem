@@ -110,7 +110,10 @@ namespace BankSystem.Infrastructure.Services
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Where(u=>u.Role == Domain.Enums.Role.User)
+                .OrderByDescending(u => u.CreatedAt)
+                .ToListAsync();
         }
 
         public async Task<User?> GetUserByIdAsync(Guid id)
