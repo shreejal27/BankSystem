@@ -39,7 +39,7 @@ namespace BankSystem.API.Controllers
             return success ? NoContent() : NotFound();
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("toggle-status/{id}")]
         public async Task<IActionResult> ToggleUserStatusAsync(Guid id)
         {
             var success = await _userService.ToggleUserStatusAsync(id);
