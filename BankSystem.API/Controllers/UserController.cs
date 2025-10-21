@@ -2,6 +2,7 @@
 using BankSystem.Application.Interfaces;
 using BankSystem.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.API.Controllers
 {
@@ -35,6 +36,13 @@ namespace BankSystem.API.Controllers
         public async Task<IActionResult> Update(Guid id, [FromBody] UserDto dto)
         {
             var success = await _userService.UpdateUserAsync(id, dto);
+            return success ? NoContent() : NotFound();
+        }
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> ToggleUserStatusAsync(Guid id)
+        {
+            var success = await _userService.ToggleUserStatusAsync(id);
             return success ? NoContent() : NotFound();
         }
 

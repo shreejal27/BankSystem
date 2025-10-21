@@ -11,5 +11,6 @@ namespace BankSystem.Application.Interfaces
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User?> GetUserByIdAsync(Guid id);
         Task<bool> UpdateUserAsync(Guid id, UserDto dto);
+        Task<bool> ToggleUserStatusAsync(Guid id);
     }
 }
