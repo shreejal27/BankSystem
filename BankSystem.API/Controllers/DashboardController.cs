@@ -31,8 +31,8 @@ namespace BankSystem.API.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            var dashboard = await _dashboardService.GetAdminDashboardAsync();
-            return Ok(dashboard);
+            var adminDashboard = await _dashboardService.GetAdminDashboardAsync();
+            return Ok(adminDashboard);
         }
     }
 }
