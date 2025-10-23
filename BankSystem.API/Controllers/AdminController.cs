@@ -1,5 +1,7 @@
 ﻿using BankSystem.Application.Interfaces;
+using BankSystem.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BankSystem.API.Controllers
 {
@@ -13,13 +15,13 @@ namespace BankSystem.API.Controllers
         }
 
         [HttpGet("dashboard")]
-        public async Task<IActionResult> GetDashboard()
+        public async Task<IActionResult> GetAdminDashboard()
         {
-            var totalUsers = await _adminService.GetTotalUsersAsync();
-            return Ok(new
-            {
-                TotalUsers = totalUsers,
-            });
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var adminDashboard = await _adminService.GetAdminDashboardAsync();
+            return Ok(adminDashboard);
         }
 
         [HttpGet("user-transaction-stats")]

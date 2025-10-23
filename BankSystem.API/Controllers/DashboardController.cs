@@ -24,15 +24,5 @@ namespace BankSystem.API.Controllers
             var dashboard = await _dashboardService.GetUserDashboardAsync(Guid.Parse(userId));
             return Ok(dashboard);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAdminDashboard()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
-
-            var adminDashboard = await _dashboardService.GetAdminDashboardAsync();
-            return Ok(adminDashboard);
-        }
     }
 }

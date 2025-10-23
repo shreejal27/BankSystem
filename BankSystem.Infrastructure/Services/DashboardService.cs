@@ -46,22 +46,5 @@ namespace BankSystem.Infrastructure.Services
                 })
             };
         }
-        public async Task<AdminDashboardDto> GetAdminDashboardAsync()
-        {
-            var totalUsersCount = await _context.Users.CountAsync();
-            var totalAccountsCount = await _context.Accounts.CountAsync();
-            var totalTransactionsCount = await _context.Transactions.CountAsync();
-            var totalTransactedAmount = await _context.Transactions.SumAsync(t => t.Amount);
-
-            return new AdminDashboardDto
-            {
-                Users = totalUsersCount,
-                Accounts = totalAccountsCount,
-                TransactedAmount = totalTransactedAmount,
-                TransactionsCount = totalTransactionsCount
-            };
-        }
-
-
     }
 }
