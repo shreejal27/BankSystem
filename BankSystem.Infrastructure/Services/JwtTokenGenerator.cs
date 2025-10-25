@@ -28,7 +28,8 @@ namespace BankSystem.Infrastructure.Services
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim("role", user.Role.ToString()),
             new Claim("email", user.Email),
-        };
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            };
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
