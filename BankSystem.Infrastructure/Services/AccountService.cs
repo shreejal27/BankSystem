@@ -34,9 +34,11 @@ namespace BankSystem.Application.Services
             return await _context.Accounts.ToListAsync();
         }
 
-        public async Task<Account?> GetAccountByIdAsync(Guid id)
+        public async Task<bool> AccountNumberExistAsync(string accountNumber)
         {
-            return await _context.Accounts.FindAsync(id);
+            var account = await _context.Accounts.FirstOrDefaultAsync(acc => acc.AccountNumber == accountNumber);
+            if (account == null) return false;
+            return true;
         }
 
         public async Task<bool> UpdateAccountAsync(Guid id, UpdateAccountDto dto)

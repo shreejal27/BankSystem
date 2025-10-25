@@ -7,7 +7,7 @@ namespace BankSystem.Application.Interfaces
     {
         Task <Account> CreateAccountAsync(AccountDto dto);
         Task<IEnumerable<Account>> GetAllAccountsAsync();
-        Task<Account?> GetAccountByIdAsync(Guid id);
+        Task<bool> AccountNumberExistAsync(string accountNumber);
         Task<bool> UpdateAccountAsync(Guid id, UpdateAccountDto dto);
         Task<bool> DeleteAccountAsync(Guid id);
         Task<decimal> GetAccountBalanceAsync(Guid userId);
