@@ -3,7 +3,7 @@
     public class AccountDto
     {
         public string AccountNumber { get; set; }
-        public string HolderName { get; set; }
-        public double Amount { get; set; }
+        public Guid UserId { get; set; }
+        public decimal Balance { get; set; }
     }
 }
