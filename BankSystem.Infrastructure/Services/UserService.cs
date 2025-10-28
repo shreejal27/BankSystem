@@ -41,10 +41,20 @@ namespace BankSystem.Infrastructure.Services
                 Email = dto.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(newGeneratedPassword)
             };
-
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
 
+            var userAccount = new Account
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                Balance = 0,
+                AccountNumber = AccountNumberGenerator.GenerateAccountNumber(),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Accounts.Add(userAccount);
+
+            await _context.SaveChangesAsync();
 
             await _emailService.SendEmailAsync(
               user.Email,
