@@ -31,11 +31,10 @@ namespace BankSystem.API.Controllers.AccountsController.cs
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> AccountNumberExist(string accountNumber)
         {
-            var account = await _accountService.GetAccountByIdAsync(id);
-            if (account == null) return NotFound();
-            return Ok(account);
+            var success = await _accountService.AccountNumberExistAsync(accountNumber);
+            return success ? NoContent() : NotFound();
         }
 
         [HttpPut("{id}")]

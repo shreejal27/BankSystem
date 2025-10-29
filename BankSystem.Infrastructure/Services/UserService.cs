@@ -64,7 +64,7 @@ namespace BankSystem.Infrastructure.Services
                         "Welcome to BankSystem!<br/>" +
                         $"Your account has been successfully created.<br/><br/>" +
                         $"Email: <strong>{user.Email}</strong><br/>" +
-                        $"Password: <strong>{newGeneratedPassword}</strong><br/><br/>" +
+                        $"Password: <strong>{newGeneratedPassword}</strong><br/>" +
                         $"AccountNumber: <strong>{userAccount.AccountNumber}</strong><br/><br/>" +
                         "Please keep your credentials safe and change your password after logging in for the first time.<br/><br/>" +
                         "Regards,<br/>BankSystem");

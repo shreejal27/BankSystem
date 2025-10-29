@@ -10,7 +10,7 @@ namespace BankSystem.Application.Validators
             RuleFor(x => x.AccountNumber)
                 .NotEmpty().WithMessage("UserId is required.");
 
-            RuleFor(x => x.Amount)
+            RuleFor(x => x.Balance)
                 .GreaterThanOrEqualTo(0).WithMessage("Initial balance must be non-negative.");
         }
     }
