@@ -6,20 +6,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace BankSystem.Application.Common.Utils
 {
-    public class EncryptDecryptAccountNumber
+    public static class EncryptDecryptAccountNumber
     {
-        private readonly string _encryptionKey;
+        private static string _encryptionKey = Environment.GetEnvironmentVariable("AccountNumEncryption:Key");
 
-        public EncryptDecryptAccountNumber(IConfiguration config)
-        {
-            _encryptionKey = config["AccountNumEncryption:Key"];
-            if (string.IsNullOrWhiteSpace(_encryptionKey))
-            {
-                throw new InvalidOperationException("Encryption key is missing in configuration.");
-            }
-        }
-
-        public string Encrypt(string plainText)
+        public static string Encrypt(string plainText)
         {
             using var aes = Aes.Create();
             var key = Encoding.UTF8.GetBytes(_encryptionKey.PadRight(32).Substring(0, 32));
@@ -37,7 +28,7 @@ namespace BankSystem.Application.Common.Utils
             return Convert.ToBase64String(ms.ToArray());
         }
 
-        public string Decrypt(string cipherText)
+        public static string Decrypt(string cipherText)
         {
             using var aes = Aes.Create();
             var key = Encoding.UTF8.GetBytes(_encryptionKey.PadRight(32).Substring(0, 32));
