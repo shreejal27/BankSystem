@@ -43,12 +43,15 @@ namespace BankSystem.Infrastructure.Services
             };
             _context.Users.Add(user);
 
+            var accountNumber = AccountNumberGenerator.GenerateAccountNumber();
+            var encryptedAccountNumber = EncryptDecryptAccountNumber.Encrypt(accountNumber);
+
             var userAccount = new Account
             {
                 Id = Guid.NewGuid(),
                 UserId = user.Id,
                 Balance = 0,
-                AccountNumber = AccountNumberGenerator.GenerateAccountNumber(),
+                AccountNumber = encryptedAccountNumber,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -65,7 +68,7 @@ namespace BankSystem.Infrastructure.Services
                         $"Your account has been successfully created.<br/><br/>" +
                         $"Email: <strong>{user.Email}</strong><br/>" +
                         $"Password: <strong>{newGeneratedPassword}</strong><br/>" +
-                        $"AccountNumber: <strong>{userAccount.AccountNumber}</strong><br/><br/>" +
+                        $"AccountNumber: <strong>{accountNumber}</strong><br/><br/>" +
                         "Please keep your credentials safe and change your password after logging in for the first time.<br/><br/>" +
                         "Regards,<br/>BankSystem");
 
