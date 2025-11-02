@@ -80,8 +80,6 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddDbContext<BankSystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddSingleton<EncryptDecryptAccountNumber>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

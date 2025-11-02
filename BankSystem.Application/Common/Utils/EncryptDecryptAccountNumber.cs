@@ -8,12 +8,21 @@ namespace BankSystem.Application.Common.Utils
 {
     public static class EncryptDecryptAccountNumber
     {
-        private static string _encryptionKey = Environment.GetEnvironmentVariable("AccountNumEncryption:Key");
+        private static readonly IConfiguration _configuration;
+        static EncryptDecryptAccountNumber()
+        {
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
+        }
 
         public static string Encrypt(string plainText)
         {
+            var encryptKey = _configuration["AccountNumEncryption:Key"];
             using var aes = Aes.Create();
-            var key = Encoding.UTF8.GetBytes(_encryptionKey.PadRight(32).Substring(0, 32));
+            var key = Encoding.UTF8.GetBytes(encryptKey.PadRight(32).Substring(0, 32));
             aes.Key = key;
             aes.IV = new byte[16];
 
@@ -30,8 +39,9 @@ namespace BankSystem.Application.Common.Utils
 
         public static string Decrypt(string cipherText)
         {
+            var decryptKey = _configuration["AccountNumEncryption:Key"];
             using var aes = Aes.Create();
-            var key = Encoding.UTF8.GetBytes(_encryptionKey.PadRight(32).Substring(0, 32));
+            var key = Encoding.UTF8.GetBytes(decryptKey.PadRight(32).Substring(0, 32));
             aes.Key = key;
             aes.IV = new byte[16];
 
