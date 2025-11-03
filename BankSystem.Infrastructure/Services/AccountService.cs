@@ -1,4 +1,5 @@
-﻿using BankSystem.Application.DTOs;
+﻿using BankSystem.Application.Common.Utils;
+using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
@@ -38,7 +39,8 @@ namespace BankSystem.Application.Services
         {
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == id);
             if (account == null) return "";
-            return account.AccountNumber;
+            var decryptedAccountNumber = EncryptDecryptAccountNumber.Decrypt(account.AccountNumber);
+            return decryptedAccountNumber;
         }
 
         public async Task<bool> AccountNumberExistAsync(string accountNumber)
