@@ -30,6 +30,20 @@ namespace BankSystem.API.Controllers.AccountsController.cs
             return Ok(accounts);
         }
 
+        [HttpGet("getAccountNumberById")]
+        public async Task<IActionResult> GetAccountNumberByUserId(Guid id)
+        {
+            var accountNumber = await _accountService.GetAccountNumberByUserIdAsync(id);
+            if (string.IsNullOrEmpty(accountNumber))
+            {
+                return BadRequest(new { Message = "Account number not found." });
+            }
+            else
+            {
+                return Ok(new { AccountNumber = accountNumber });
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> AccountNumberExist(string accountNumber)
         {

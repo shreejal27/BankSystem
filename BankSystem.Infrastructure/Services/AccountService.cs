@@ -34,6 +34,13 @@ namespace BankSystem.Application.Services
             return await _context.Accounts.ToListAsync();
         }
 
+        public async Task<string> GetAccountNumberByUserIdAsync(Guid id)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserId == id);
+            if (account == null) return "";
+            return account.AccountNumber;
+        }
+
         public async Task<bool> AccountNumberExistAsync(string accountNumber)
         {
             var account = await _context.Accounts.FirstOrDefaultAsync(acc => acc.AccountNumber == accountNumber);
