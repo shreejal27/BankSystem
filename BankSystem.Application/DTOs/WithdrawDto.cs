@@ -2,7 +2,7 @@
 {
     public class WithdrawDto
     {
-        public Guid AccountId { get; set; }
+        public string AccountNumber { get; set; }
         public decimal Amount { get; set; }
     }
 }

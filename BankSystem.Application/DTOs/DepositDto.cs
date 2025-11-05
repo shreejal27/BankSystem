@@ -3,7 +3,7 @@ namespace BankSystem.Application.DTOs
 {
     public class DepositDto
     {
-        public Guid AccountId { get; set; }
+        public string AccountNumber { get; set; }
         public decimal Amount { get; set; }
     }
 }
