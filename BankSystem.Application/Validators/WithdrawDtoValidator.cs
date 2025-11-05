@@ -7,7 +7,7 @@ namespace BankSystem.Application.Validators
     {
         public WithdrawDtoValidator()
         {
-            RuleFor(x => x.AccountId).NotEmpty();
+            RuleFor(x => x.AccountNumber).NotEmpty();
             RuleFor(x => x.Amount).GreaterThan(0);
         }
     }

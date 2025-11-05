@@ -1,8 +1,10 @@
-﻿using BankSystem.Application.DTOs;
+﻿using BankSystem.Application.Common.Utils;
+using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BankSystem.Infrastructure.Services
 {
@@ -21,7 +23,9 @@ namespace BankSystem.Infrastructure.Services
 
         public async Task DepositAsync(DepositDto dto)
         {
-            var account = await _context.Accounts.FindAsync(dto.AccountId)
+            var encryptAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.AccountNumber);
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptAccountNumber)
                 ?? throw new Exception("Account not found");
 
             account.Balance += dto.Amount;
@@ -31,7 +35,7 @@ namespace BankSystem.Infrastructure.Services
                 AccountId = account.Id,
                 Amount = dto.Amount,
                 Type = TransactionType.Deposit,
-                Description = $"Deposited {dto.Amount}"
+                Description = $"{account.User.Name} deposited {dto.Amount}"
             });
 
             await _context.SaveChangesAsync();
@@ -47,7 +51,9 @@ namespace BankSystem.Infrastructure.Services
 
         public async Task WithdrawAsync(WithdrawDto dto)
         {
-            var account = await _context.Accounts.FindAsync(dto.AccountId)
+            var encryptAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.AccountNumber);
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptAccountNumber)
                 ?? throw new Exception("Account not found");
 
             if (account.Balance < dto.Amount)
@@ -85,14 +91,18 @@ namespace BankSystem.Infrastructure.Services
 
         public async Task TransferAsync(TransferDto dto)
         {
-            if (dto.FromAccountId == dto.ToAccountId)
+            if (dto.FromAccountNumber == dto.ToAccountNumber)
                 throw new Exception("Cannot transfer to the same account.");
 
-            var fromAccount = await _context.Accounts.FindAsync(dto.FromAccountId)
-                ?? throw new Exception("Sender account not found");
+            var encryptFromAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.FromAccountNumber);
 
-            var toAccount = await _context.Accounts.FindAsync(dto.ToAccountId)
-                ?? throw new Exception("Receiver account not found");
+            var encryptToAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.ToAccountNumber);
+
+            var fromAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptFromAccountNumber)
+                ?? throw new Exception("Sender Account not found");
+
+            var toAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptToAccountNumber)
+              ?? throw new Exception("Receiver Account not found");
 
             if (fromAccount.Balance < dto.Amount)
                 throw new Exception("Insufficient balance");
@@ -106,7 +116,7 @@ namespace BankSystem.Infrastructure.Services
                 Amount = dto.Amount,
                 Type = TransactionType.Transfer,
                 Timestamp = DateTime.UtcNow,
-                Description = $"Transferred {dto.Amount} to {toAccount.AccountNumber}"
+                Description = $"{fromAccount.User.Name} transferred {dto.Amount} to {toAccount.User.Name}"
             };
 
             var transactionIn = new Transaction
@@ -115,7 +125,7 @@ namespace BankSystem.Infrastructure.Services
                 Amount = dto.Amount,
                 Type = TransactionType.Deposit,
                 Timestamp = DateTime.UtcNow,
-                Description = $"Received {dto.Amount} from {fromAccount.AccountNumber}"
+                Description = $"{toAccount.User.Name} received {dto.Amount} from {fromAccount.User.Name}"
             };
 
             _context.Transactions.AddRange(transactionOut, transactionIn);

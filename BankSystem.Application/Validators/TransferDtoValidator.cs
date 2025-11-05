@@ -7,8 +7,8 @@ namespace BankSystem.Application.Validators
     {
         public TransferDtoValidator()
         {
-            RuleFor(x => x.FromAccountId).NotEmpty();
-            RuleFor(x => x.ToAccountId).NotEmpty().NotEqual(x => x.FromAccountId);
+            RuleFor(x => x.FromAccountNumber).NotEmpty();
+            RuleFor(x => x.ToAccountNumber).NotEmpty().NotEqual(x => x.FromAccountNumber);
             RuleFor(x => x.Amount).GreaterThan(0);
         }
     }
