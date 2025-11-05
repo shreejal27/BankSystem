@@ -4,6 +4,7 @@ using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Security;
 using System.Linq;
 
 namespace BankSystem.Infrastructure.Services
@@ -23,6 +24,11 @@ namespace BankSystem.Infrastructure.Services
 
         public async Task DepositAsync(DepositDto dto)
         {
+            if (dto.Amount <= 0)
+            {
+                throw new Exception("Invalid deposit amount");
+            }
+
             var encryptAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.AccountNumber);
 
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptAccountNumber)
@@ -51,6 +57,10 @@ namespace BankSystem.Infrastructure.Services
 
         public async Task WithdrawAsync(WithdrawDto dto)
         {
+            if (dto.Amount <= 0)
+            {
+                throw new Exception("Invalid withdraw amount");
+            }
             var encryptAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.AccountNumber);
 
             var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptAccountNumber)
@@ -91,6 +101,11 @@ namespace BankSystem.Infrastructure.Services
 
         public async Task TransferAsync(TransferDto dto)
         {
+            if (dto.Amount <= 0)
+            {
+                throw new Exception("Invalid transfer amount");
+            }
+
             if (dto.FromAccountNumber == dto.ToAccountNumber)
                 throw new Exception("Cannot transfer to the same account.");
 
