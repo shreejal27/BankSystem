@@ -31,7 +31,7 @@ namespace BankSystem.Infrastructure.Services
 
             var encryptAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.AccountNumber);
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptAccountNumber)
+            var account = await _context.Accounts.Include(a => a.User).FirstOrDefaultAsync(a => a.AccountNumber == encryptAccountNumber)
                 ?? throw new Exception("Account not found");
 
             account.Balance += dto.Amount;
