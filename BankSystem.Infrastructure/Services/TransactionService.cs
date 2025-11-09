@@ -4,8 +4,6 @@ using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Security;
-using System.Linq;
 
 namespace BankSystem.Infrastructure.Services
 {
@@ -63,8 +61,8 @@ namespace BankSystem.Infrastructure.Services
             }
             var encryptAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.AccountNumber);
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptAccountNumber)
-                ?? throw new Exception("Account not found");
+            var account = await _context.Accounts.Include(a => a.User).FirstOrDefaultAsync(a => a.AccountNumber == encryptAccountNumber)
+             ?? throw new Exception("Account not found");
 
             if (account.Balance < dto.Amount)
                 throw new Exception("Insufficient balance");
