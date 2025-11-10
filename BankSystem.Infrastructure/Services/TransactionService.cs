@@ -84,7 +84,8 @@ namespace BankSystem.Infrastructure.Services
             await _emailService.SendEmailAsync(
                account.User.Email,
                "Withdrawal Confirmation",
-               $"Dear {account.User.Name},<br/><br/>You have withdrawn <strong>{dto.Amount}</strong> from your account {account.AccountNumber}.<br/>Remaining Balance: <strong>{account.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
+               $"Dear {account.User.Name},<br/><br/>You have withdrawn <strong>{dto.Amount}</strong> from your account.<br/>" +
+               $"Remaining Balance: <strong>{account.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
            );
 
             if (account.Balance < LowBalanceThreshold)
@@ -111,10 +112,10 @@ namespace BankSystem.Infrastructure.Services
 
             var encryptToAccountNumber = EncryptDecryptAccountNumber.Encrypt(dto.ToAccountNumber);
 
-            var fromAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptFromAccountNumber)
+            var fromAccount = await _context.Accounts.Include(a => a.User).FirstOrDefaultAsync(a => a.AccountNumber == encryptFromAccountNumber)
                 ?? throw new Exception("Sender Account not found");
 
-            var toAccount = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == encryptToAccountNumber)
+            var toAccount = await _context.Accounts.Include(a => a.User).FirstOrDefaultAsync(a => a.AccountNumber == encryptToAccountNumber)
               ?? throw new Exception("Receiver Account not found");
 
             if (fromAccount.Balance < dto.Amount)
