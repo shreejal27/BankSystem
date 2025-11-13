@@ -128,7 +128,7 @@ namespace BankSystem.Infrastructure.Services
             {
                 AccountId = fromAccount.Id,
                 Amount = dto.Amount,
-                Type = TransactionType.Transfer,
+                Type = TransactionType.TransferOutgoing,
                 Timestamp = DateTime.UtcNow,
                 Description = $"{fromAccount.User.Name} transferred {dto.Amount} to {toAccount.User.Name}"
             };
@@ -137,7 +137,7 @@ namespace BankSystem.Infrastructure.Services
             {
                 AccountId = toAccount.Id,
                 Amount = dto.Amount,
-                Type = TransactionType.Deposit,
+                Type = TransactionType.TransferIncoming,
                 Timestamp = DateTime.UtcNow,
                 Description = $"{toAccount.User.Name} received {dto.Amount} from {fromAccount.User.Name}"
             };
