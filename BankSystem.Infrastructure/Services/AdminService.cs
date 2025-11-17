@@ -1,4 +1,5 @@
-﻿using BankSystem.Application.DTOs.Admin;
+﻿using BankSystem.Application.DTOs;
+using BankSystem.Application.DTOs.Admin;
 using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
 using BankSystem.Infrastructure.Data;
@@ -22,12 +23,39 @@ namespace BankSystem.Infrastructure.Services
             var totalTransactionsCount = await _context.Transactions.CountAsync();
             var totalTransactedAmount = await _context.Transactions.SumAsync(t => t.Amount);
 
+            var latestUsers = await _context.Users
+            .OrderByDescending(u => u.CreatedAt)
+            .Take(7) 
+            .Select(u => new AdminDashboardRecentUserDto
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email,
+                CreatedAt = u.CreatedAt
+            })
+            .ToListAsync();
+
+            var latestTransactions = await _context.Transactions
+                .OrderByDescending(t => t.Timestamp)
+                .Take(7) 
+                .Select(t => new AdminDashboardRecentTransactionDto
+                {
+                    Id = t.Id,
+                    Amount = t.Amount,
+                    Type = t.Type,
+                    AccountNumber = t.Account.AccountNumber,
+                    Timestamp = t.Timestamp
+                })
+                .ToListAsync();
+
             return new AdminDashboardDto
             {
                 Users = totalUsersCount,
                 Accounts = totalAccountsCount,
                 TransactedAmount = totalTransactedAmount,
-                TransactionsCount = totalTransactionsCount
+                TransactionsCount = totalTransactionsCount,
+                LatestUsers = latestUsers,
+                LatestTransactions = latestTransactions
             };
         }
         public async Task<int> GetTotalUsersAsync()
