@@ -42,8 +42,9 @@ namespace BankSystem.Infrastructure.Services
                 {
                     Id = t.Id,
                     Amount = t.Amount,
-                    Type = t.Type,
-                    AccountNumber = t.Account.AccountNumber,
+                    Type = t.Type.ToString(),
+                    Name = t.Account.User.Name,
+                    Email = t.Account.User.Email,
                     Timestamp = t.Timestamp
                 })
                 .ToListAsync();
