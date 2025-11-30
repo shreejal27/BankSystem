@@ -18,9 +18,9 @@ namespace BankSystem.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsersAsync()
+        public async Task<IActionResult> GetAllUsersAsync([FromQuery] string flag)
         {
-            var users = await _userService.GetAllUsersAsync();
+            var users = await _userService.GetAllUsersAsync(flag);
             return Ok(users);
         }
 

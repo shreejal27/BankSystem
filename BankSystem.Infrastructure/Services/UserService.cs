@@ -2,6 +2,7 @@
 using BankSystem.Application.DTOs;
 using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
+using BankSystem.Domain.Enums;
 using BankSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -122,12 +123,20 @@ namespace BankSystem.Infrastructure.Services
             }
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<User>> GetAllUsersAsync(string flag)
         {
-            return await _context.Users
-                .Where(u=>u.Role == Domain.Enums.Role.User)
-                .OrderByDescending(u => u.CreatedAt)
-                .ToListAsync();
+            var query = _context.Users.Where(u => u.Role == Role.User);
+
+            if (flag?.ToLower() == "all")
+            {
+                query = query.Where(u => u.IsActive == true || u.IsActive == false);
+            }
+            else if (flag?.ToLower() == "pending")
+            {
+                query = query.Where(u => u.IsActive == null);
+            }
+
+            return await query.OrderByDescending(u => u.CreatedAt).ToListAsync();
         }
 
         public async Task<User?> GetUserByIdAsync(Guid id)
