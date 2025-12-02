@@ -40,6 +40,7 @@ namespace BankSystem.Infrastructure.Services
             {
                 Name = dto.Name,
                 Email = dto.Email,
+                IsActive = null,
                 Password = BCrypt.Net.BCrypt.HashPassword(newGeneratedPassword)
             };
             _context.Users.Add(user);
@@ -60,20 +61,33 @@ namespace BankSystem.Infrastructure.Services
 
             await _context.SaveChangesAsync();
 
+            //await _emailService.SendEmailAsync(
+            //  user.Email,
+            //   "Registration Successful",
+
+            //            $"Dear {user.Email},<br/><br/>" +
+            //            "Welcome to BankSystem!<br/>" +
+            //            $"Your account has been successfully created.<br/><br/>" +
+            //            $"Email: <strong>{user.Email}</strong><br/>" +
+            //            $"Password: <strong>{newGeneratedPassword}</strong><br/>" +
+            //            $"AccountNumber: <strong>{accountNumber}</strong><br/><br/>" +
+            //            "Please keep your credentials safe and change your password after logging in for the first time.<br/><br/>" +
+            //            "Regards,<br/>BankSystem");
+
             await _emailService.SendEmailAsync(
               user.Email,
-               "Registration Successful",
+               "Registration Received – Awaiting Approval",
 
                         $"Dear {user.Email},<br/><br/>" +
-                        "Welcome to BankSystem!<br/>" +
-                        $"Your account has been successfully created.<br/><br/>" +
-                        $"Email: <strong>{user.Email}</strong><br/>" +
-                        $"Password: <strong>{newGeneratedPassword}</strong><br/>" +
-                        $"AccountNumber: <strong>{accountNumber}</strong><br/><br/>" +
-                        "Please keep your credentials safe and change your password after logging in for the first time.<br/><br/>" +
-                        "Regards,<br/>BankSystem");
+                        "Thank you for registering with BankSystem!<br/>" +
+                        $"Your account request has been successfully received and is currently <strong>pending approval</strong> from our administration team.<br/><br/>" +
+                        $"Once your account is reviewed and approved, you will receive another email containing your: <br/>" +
+                        $"<strong>Account Number</strong><br/>" +
+                        $" <strong>Temporary Password</strong><br/>" +
+                        $" <strong>Temporary Password</strong><br/><br/>" +
 
-
+                        "Thank you for choosing BankSystem.We will notify you as soon as your account is activated.<br/><br/>" +
+                        "Regards,<br/>BankSystem Team");
             return true;
         }
 
