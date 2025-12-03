@@ -31,7 +31,14 @@ namespace BankSystem.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut("users/{id}/deactivate")]
+        [HttpPost("user/activate/{id}")]
+        public async Task<IActionResult> ActivateUser(Guid id)
+        {
+            await _adminService.ActivateUserAsync(id);
+            return Ok(new { message = "User activated successfully" });
+        }
+
+        [HttpPut("user/deactivate/{id}")]
         public async Task<IActionResult> DeactivateUser(Guid id)
         {
             await _adminService.DeactivateUserAsync(id);

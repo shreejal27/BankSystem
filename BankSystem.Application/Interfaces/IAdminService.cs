@@ -8,6 +8,7 @@ namespace BankSystem.Application.Interfaces
         Task<AdminDashboardDto> GetAdminDashboardAsync();
         Task<int> GetTotalUsersAsync();
         Task<object> GetUserTransactionStatsAsync();
+        Task ActivateUserAsync(Guid userId);
         Task DeactivateUserAsync(Guid userId);
         Task<IEnumerable<Transaction>> GetAllTransactionsAsync();
     }

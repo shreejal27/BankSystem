@@ -83,7 +83,6 @@ namespace BankSystem.Infrastructure.Services
                         $"Your account request has been successfully received and is currently <strong>pending approval</strong> from our administration team.<br/><br/>" +
                         $"Once your account is reviewed and approved, you will receive another email containing your: <br/>" +
                         $"<strong>Account Number</strong><br/>" +
-                        $" <strong>Temporary Password</strong><br/>" +
                         $" <strong>Temporary Password</strong><br/><br/>" +
 
                         "Thank you for choosing BankSystem.We will notify you as soon as your account is activated.<br/><br/>" +
