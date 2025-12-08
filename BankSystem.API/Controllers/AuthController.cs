@@ -43,23 +43,23 @@ namespace BankSystem.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserDto dto)
         {
-            var token = await _userService.LoginAsync(dto);
-            if (token == null)
+            var result = await _userService.LoginAsync(dto);
+            if (!result.Success)
             {
                 return StatusCode(401, new
                 {
                     statusCode = 401,
-                    message = "Invalid credentials"
+                    message = result.Message,
                 });
             }
 
-            return StatusCode(200, new
+            return Ok(new
             {
                 statusCode = 200,
-                message = "Login successful",
+                message = result.Message,
                 data = new
                 {
-                    token
+                    token = result.Data
                 }
             });
         }

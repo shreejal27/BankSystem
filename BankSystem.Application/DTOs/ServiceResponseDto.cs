@@ -1,0 +1,9 @@
+﻿namespace BankSystem.Application.DTOs
+{
+    public class ServiceResponseDto
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public string? Data { get; set; }
+    }
+}

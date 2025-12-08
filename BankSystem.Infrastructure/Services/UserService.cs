@@ -90,14 +90,38 @@ namespace BankSystem.Infrastructure.Services
             return true;
         }
 
-        public async Task<string?> LoginAsync(LoginUserDto dto)
+        public async Task<ServiceResponseDto> LoginAsync(LoginUserDto dto)
         {
+            var response = new ServiceResponseDto();
+
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
-                return null;
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = "User Not Found!";
+                return response;
+            }
+
+            if (user.IsActive == null)
+            {
+                response.Success = false;
+                response.Message = "User account is not activated";
+                return response;
+            }
+
+            if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+            {
+                response.Success = false;
+                response.Message = "Invalid Credentials";
+                return response;
+            }
 
             var token = _jwt.GenerateToken(user);
-            return token;
+            response.Success = true;
+            response.Message = "Login successful";
+            response.Data = token;
+
+            return response;
         }
         public async Task<bool> ResetPasswordAsync(ResetPasswordDto dto)
         {
