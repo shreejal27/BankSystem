@@ -61,19 +61,6 @@ namespace BankSystem.Infrastructure.Services
 
             await _context.SaveChangesAsync();
 
-            //await _emailService.SendEmailAsync(
-            //  user.Email,
-            //   "Registration Successful",
-
-            //            $"Dear {user.Email},<br/><br/>" +
-            //            "Welcome to BankSystem!<br/>" +
-            //            $"Your account has been successfully created.<br/><br/>" +
-            //            $"Email: <strong>{user.Email}</strong><br/>" +
-            //            $"Password: <strong>{newGeneratedPassword}</strong><br/>" +
-            //            $"AccountNumber: <strong>{accountNumber}</strong><br/><br/>" +
-            //            "Please keep your credentials safe and change your password after logging in for the first time.<br/><br/>" +
-            //            "Regards,<br/>BankSystem");
-
             await _emailService.SendEmailAsync(
               user.Email,
                "Registration Received – Awaiting Approval",

@@ -1,4 +1,5 @@
-﻿using BankSystem.Application.DTOs;
+﻿using BankSystem.Application.Common.Utils;
+using BankSystem.Application.DTOs;
 using BankSystem.Application.DTOs.Admin;
 using BankSystem.Application.Interfaces;
 using BankSystem.Domain.Entities;
@@ -10,10 +11,12 @@ namespace BankSystem.Infrastructure.Services
     public class AdminService : IAdminService
     {
         private readonly BankSystemDbContext _context;
+        private readonly IEmailService _emailService;
 
-        public AdminService(BankSystemDbContext context)
+        public AdminService(BankSystemDbContext context, IEmailService emailService)
         {
             _context = context;
+            _emailService = emailService;
         }
 
         public async Task<AdminDashboardDto> GetAdminDashboardAsync()
@@ -95,6 +98,25 @@ namespace BankSystem.Infrastructure.Services
                 ?? throw new Exception("User not found");
 
             user.IsActive = true;
+
+            var userAccountInfo = await _context.Accounts.FirstOrDefaultAsync(x => x.UserId == user.Id) ?? throw new Exception("User Account not found");
+
+            var decryptedAccountNumber = EncryptDecryptAccountNumber.Decrypt(userAccountInfo.AccountNumber);
+
+            await _emailService.SendEmailAsync(
+              user.Email,
+               "Registration Successful",
+
+                        $"Dear {user.Email},<br/><br/>" +
+                        "Welcome to BankSystem!<br/>" +
+                        $"Your account has been successfully created.<br/><br/>" +
+                        $"Email: <strong>{user.Email}</strong><br/>" +
+                        $"Password: <strong>{user.Password}</strong><br/>" +
+                        $"AccountNumber: <strong>{decryptedAccountNumber}</strong><br/><br/>" +
+                        "Please keep your credentials safe and change your password after logging in for the first time.<br/><br/>" +
+                        "Regards,<br/>BankSystem");
+
+
             await _context.SaveChangesAsync();
         }
 
