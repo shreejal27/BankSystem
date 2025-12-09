@@ -41,23 +41,9 @@ namespace BankSystem.Infrastructure.Services
                 Name = dto.Name,
                 Email = dto.Email,
                 IsActive = null,
-                Password = BCrypt.Net.BCrypt.HashPassword(newGeneratedPassword)
+                Password = newGeneratedPassword,
             };
             _context.Users.Add(user);
-
-            var accountNumber = AccountNumberGenerator.GenerateAccountNumber();
-            var encryptedAccountNumber = EncryptDecryptAccountNumber.Encrypt(accountNumber);
-
-            var userAccount = new Account
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Balance = 0,
-                AccountNumber = encryptedAccountNumber,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            _context.Accounts.Add(userAccount);
 
             await _context.SaveChangesAsync();
 
