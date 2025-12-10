@@ -18,7 +18,6 @@ namespace BankSystem.Infrastructure.Services
             _context = context;
             _emailService = emailService;
         }
-
         public async Task<AdminDashboardDto> GetAdminDashboardAsync()
         {
             var totalUsersCount = await _context.Users.CountAsync();
@@ -119,7 +118,6 @@ namespace BankSystem.Infrastructure.Services
             await _emailService.SendEmailAsync(
               user.Email,
                "Registration Successful",
-
                         $"Dear {user.Email},<br/><br/>" +
                         "Welcome to BankSystem!<br/>" +
                         $"Your account has been successfully created.<br/><br/>" +
@@ -129,10 +127,8 @@ namespace BankSystem.Infrastructure.Services
                         "Please keep your credentials safe and change your password after logging in for the first time.<br/><br/>" +
                         "Regards,<br/>BankSystem"
             );
-
             await _context.SaveChangesAsync();
         }
-
         public async Task DeactivateUserAsync(Guid userId)
         {
             var user = await _context.Users.FindAsync(userId)
