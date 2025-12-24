@@ -10,7 +10,7 @@ namespace BankSystem.Domain.Entities
         public string Password { get; set; } = string.Empty;
         public Role Role { get; set; } = Role.User;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public bool? IsActive { get; set; } 
-
+        public bool? IsActive { get; set; }
+        public bool NeedEmail { get; set; } = false;
     }
 }
