@@ -45,7 +45,7 @@ namespace BankSystem.Infrastructure.Services
             await _context.SaveChangesAsync();
 
             var user = account.User;
-            if (user != null)
+            if (user != null && user.NeedEmail)
             {
                 var subject = "Deposit Confirmation";
                 var message = $"Hi {user.Name},\n\nYou've successfully deposited {dto.Amount} into your account.";
@@ -81,14 +81,17 @@ namespace BankSystem.Infrastructure.Services
 
             await _context.SaveChangesAsync();
 
-            await _emailService.SendEmailAsync(
-               account.User.Email,
-               "Withdrawal Confirmation",
-               $"Dear {account.User.Name},<br/><br/>You have withdrawn <strong>{dto.Amount}</strong> from your account.<br/>" +
-               $"Remaining Balance: <strong>{account.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
-           );
+            if (account.User.NeedEmail)
+            {
+                await _emailService.SendEmailAsync(
+                   account.User.Email,
+                   "Withdrawal Confirmation",
+                   $"Dear {account.User.Name},<br/><br/>You have withdrawn <strong>{dto.Amount}</strong> from your account.<br/>" +
+                   $"Remaining Balance: <strong>{account.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
+               );
+            }
 
-            if (account.Balance < LowBalanceThreshold)
+            if (account.Balance < LowBalanceThreshold && account.User.NeedEmail)
             {
                 await _emailService.SendEmailAsync(
                     account.User.Email,
@@ -146,25 +149,31 @@ namespace BankSystem.Infrastructure.Services
 
             await _context.SaveChangesAsync();
 
-            await _emailService.SendEmailAsync(
-               fromAccount.User.Email,
-               "Transfer Confirmation",
-               $"Dear {fromAccount.User.Name},<br/><br/>You have transferred <strong>{dto.Amount}</strong> to account ending with {dto.FromAccountNumber[^4..]}.<br/>Remaining Balance: <strong>{fromAccount.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
-           );
+            if (fromAccount.User.NeedEmail)
+            {
+                await _emailService.SendEmailAsync(
+                   fromAccount.User.Email,
+                   "Transfer Confirmation",
+                   $"Dear {fromAccount.User.Name},<br/><br/>You have transferred <strong>{dto.Amount}</strong> to account ending with {dto.FromAccountNumber[^4..]}.<br/>Remaining Balance: <strong>{fromAccount.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
+               );
 
-            await _emailService.SendEmailAsync(
+                if (fromAccount.Balance < LowBalanceThreshold)
+                {
+                    await _emailService.SendEmailAsync(
+                        fromAccount.User.Email,
+                        "Low Balance Alert",
+                        $"Dear {fromAccount.User.Name},<br/><br/>After transferring {dto.Amount}, your remaining balance is <strong>{fromAccount.Balance}</strong>, which is below the safe threshold.<br/>Please consider depositing funds.<br/><br/>Regards,<br/>BankSystem"
+                    );
+                }
+            }
+
+            if (toAccount.User.NeedEmail)
+            {
+                await _emailService.SendEmailAsync(
                 toAccount.User.Email,
                 "Deposit Received",
                 $"Dear {toAccount.User.Name},<br/><br/>You have received <strong>{dto.Amount}</strong> from account ending with {dto.ToAccountNumber[^4..]}.<br/>New Balance: <strong>{toAccount.Balance}</strong><br/><br/>Regards,<br/>BankSystem"
             );
-
-            if (fromAccount.Balance < LowBalanceThreshold)
-            {
-                await _emailService.SendEmailAsync(
-                    fromAccount.User.Email,
-                    "Low Balance Alert",
-                    $"Dear {fromAccount.User.Name},<br/><br/>After transferring {dto.Amount}, your remaining balance is <strong>{fromAccount.Balance}</strong>, which is below the safe threshold.<br/>Please consider depositing funds.<br/><br/>Regards,<br/>BankSystem"
-                );
             }
         }
 
